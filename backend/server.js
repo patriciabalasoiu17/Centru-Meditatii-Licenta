@@ -1,11 +1,15 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require ('mongoose')
-const meditatiiRoutes = require('./routes/meditatii')
+const cors = require('cors')
+const studentRoutes = require('./routes/StudentRoutes')
+const teacherRoutes = require('./routes/TeacherRoutes')
 
 
 // express app
 const app = express()
+
+app.use(cors())
 
 app.use(express.json())
 
@@ -14,7 +18,8 @@ app.use((req, res, next) =>{
     next()
 })
 
-app.use('/api/meditatii', meditatiiRoutes)
+app.use('/api/student', studentRoutes)
+app.use('/api/teacher', teacherRoutes)
 
 mongoose.connect(process.env.MONGO_URI)
 .then(()=> {
