@@ -17,7 +17,6 @@ export default function Groups() {
     if (error || !data) {
         return <div>Something went wrong...</div>
     }
-    console.log("🚀 ~ Group ~ data:", data)
     return <div>
         <AddGroupDialog />
         <DataTable data={data} columns={columns} />

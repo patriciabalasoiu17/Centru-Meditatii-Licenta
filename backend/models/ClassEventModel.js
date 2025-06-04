@@ -1,4 +1,4 @@
-// models/ClassEventModel.js
+
 import mongoose, { Schema } from "mongoose";
 
 const ClassEventSchema = new Schema(

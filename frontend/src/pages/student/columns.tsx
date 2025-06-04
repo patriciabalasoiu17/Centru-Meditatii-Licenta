@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { type Student } from "./types"
 import { AddStudentDialog } from "./AddStudentDialog"
+import { Library } from "lucide-react"
 
 
 export const columns: ColumnDef<Student>[] = [
@@ -19,6 +20,10 @@ export const columns: ColumnDef<Student>[] = [
     {
         accessorKey: "Year",
         header: "Clasa",
+    },
+    {
+        header: "Catalog",
+        cell: () => <Library />
     },
     {
         header: "Edit",

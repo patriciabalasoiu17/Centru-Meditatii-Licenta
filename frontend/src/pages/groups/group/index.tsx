@@ -5,6 +5,7 @@ import { type Group } from "../types";
 import { getStudent } from "@/pages/student/StudentApi";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
+import { Student } from "@/pages/student/types";
 
 export default function Group() {
     const params = useParams();
@@ -44,7 +45,7 @@ export default function Group() {
 
     return (
         <div>
-            <DataTable data={students} columns={columns} />
+            <DataTable data={students as Student[]} columns={columns} />
         </div>
     );
 }
