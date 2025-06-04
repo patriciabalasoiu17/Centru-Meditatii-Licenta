@@ -5,7 +5,7 @@ import LayoutSidebar from './LayoutSidebar';
 
 const Layout = () => {
   return (
-    <div className="flex w-full h-full">
+    <div className=" w-full h-full">
       <LayoutSidebar>
         <Outlet />
       </LayoutSidebar>

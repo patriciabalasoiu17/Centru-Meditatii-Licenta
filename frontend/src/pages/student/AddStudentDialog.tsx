@@ -45,7 +45,7 @@ export function AddStudentDialog({ id }: { id?: string }) {
         mutationFn: addStudent,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["students"] });
-            toast.success("Elev adaugat cu succes.");
+            toast.success("Elev adăugat cu succes.");
             setOpen(false);
         },
     });
@@ -63,7 +63,7 @@ export function AddStudentDialog({ id }: { id?: string }) {
         mutationFn: deleteStudent,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["students"] });
-            toast.success("Elev sters cu succes.");
+            toast.success("Elev șters cu succes.");
             setOpen(false);
         },
     });
@@ -97,7 +97,7 @@ export function AddStudentDialog({ id }: { id?: string }) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{id ? "Editeaza" : "Adauga"} un elev </DialogTitle>
+                    <DialogTitle>{id ? "Editează" : "Adaugă"} un elev </DialogTitle>
 
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="grid gap-4 py-4">
@@ -129,8 +129,8 @@ export function AddStudentDialog({ id }: { id?: string }) {
 
 
                     <DialogFooter>
-                        {id && <Button variant={"destructive"} onClick={handleDelete}>Sterge elevul</Button>}
-                        <Button type="submit">Salveaza modificarile</Button>
+                        {id && <Button variant={"destructive"} onClick={handleDelete}>Șterge elevul</Button>}
+                        <Button type="submit">Salvează modificarile</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

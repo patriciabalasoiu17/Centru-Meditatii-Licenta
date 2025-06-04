@@ -1,15 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { type Teacher } from "./types"
-import { AddTeacherDialog } from "./AddTeacherDialog"
-import CalendarHeader from "./CalendarHeader"
+import { UserResource } from "@clerk/types"
 
 
-export const columns: ColumnDef<Teacher>[] = [
-    {
-        header: "Orar",
-        cell: (props) => <CalendarHeader teacherId={props.row.original._id} />
-
-    },
+export const teacherColumns: ColumnDef<UserResource>[] = [
     {
         accessorKey: "Name",
         header: "Nume",
@@ -27,8 +20,4 @@ export const columns: ColumnDef<Teacher>[] = [
         header: "Materie",
         cell: (props) => <div className="flex flex-col"> {(props.getValue() as string[]).map((materie) => <div> {materie}  </div>)}</div>
     },
-    {
-        header: " ",
-        cell: (props) => <AddTeacherDialog id={props.row.original._id} />
-    }
 ]

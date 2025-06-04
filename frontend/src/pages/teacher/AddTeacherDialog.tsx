@@ -37,7 +37,9 @@ export function AddTeacherDialog({ id }: { id?: string }) {
             setName(teacherData.Name);
             setMail(teacherData.Mail);
             setPhone(teacherData.Phone);
-            setSubject(teacherData.Subject);
+            setSubject([...teacherData.Subject]);
+
+            console.log("🚀 ~ useEffect ~ teacherData.Subject:", subject)
         }
     }, [teacherData]);
 
@@ -47,11 +49,11 @@ export function AddTeacherDialog({ id }: { id?: string }) {
         mutationFn: addTeacher,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["teachers"] });
-            toast.success("Profesor adaugat cu succes.");
+            toast.success("Profesor adăugat cu succes.");
             setOpen(false);
         },
         onError: () => {
-            toast.error("Ceva nu a functionat...");
+            toast.error("Ceva nu a funcționat...");
             setOpen(false);
 
         }
@@ -61,7 +63,8 @@ export function AddTeacherDialog({ id }: { id?: string }) {
         mutationFn: updateTeacher,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["teachers"] });
-            toast.success("Profesor modificat cu succes.");
+            toast.error("Ceva nu a funcționat...");
+            // toast.success("Profesor modificat cu succes.");
             setOpen(false);
         },
     });
@@ -104,7 +107,7 @@ export function AddTeacherDialog({ id }: { id?: string }) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{id ? "Editeaza" : "Adauga"} un profesor </DialogTitle>
+                    <DialogTitle>{id ? "Editează" : "Adaugă"} un profesor </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -130,23 +133,23 @@ export function AddTeacherDialog({ id }: { id?: string }) {
                             Materie
                         </Label>
                         <MultiSelect
-                        options={SUBJECT_OPTIONS}
-                        onValueChange={setSubject}
-                        defaultValue={[]}
-                        placeholder="Alege materii"
-                        variant="inverted"
-                        className="col-span-3"
-                        animation={2}
-                        maxCount={3}
-                    />
+                            options={SUBJECT_OPTIONS}
+                            onValueChange={setSubject}
+                            defaultValue={subject}
+                            placeholder="Alege materii"
+                            variant="inverted"
+                            className="col-span-3"
+                            animation={2}
+                            maxCount={3}
+                        />
                     </div>
 
-                   
+
 
 
                     <DialogFooter>
-                        {id && <Button variant={"destructive"} onClick={handleDelete}>Sterge profesorul</Button>}
-                        <Button type="submit">Salveaza modificarile</Button>
+                        {id && <Button variant={"destructive"} onClick={handleDelete}>Șterge profesorul</Button>}
+                        <Button type="submit">Salvează modificarile</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

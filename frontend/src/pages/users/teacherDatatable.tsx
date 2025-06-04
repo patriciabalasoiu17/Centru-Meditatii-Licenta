@@ -19,7 +19,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function TeacherDatatable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
@@ -30,7 +30,8 @@ export function DataTable<TData, TValue>({
     })
 
     return (
-        <div className="rounded-md border mt-10 w-full">
+        <div className="rounded-md ">
+            <div className="border-1 border-black rounded-t-md text-xl font-bold flex justify-center bg-gray-200">Profesori</div>
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (

@@ -13,6 +13,11 @@ export const getTeacher = async (id: string): Promise<Teacher> => {
   return res.data;
 };
 
+export const getTeacherByEmail = async (email: string): Promise<Teacher> => {
+  const res = await axios.get(`${BASE_URL}/email/${email}`);
+  return res.data;
+};
+
 export const addTeacher = async (teacher: Teacher) => {
   await axios.post(BASE_URL, teacher);
 };
