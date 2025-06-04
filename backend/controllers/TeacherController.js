@@ -1,83 +1,95 @@
-const Teacher = require('../models/TeacherModel')
-const mongoose = require('mongoose')
+// controllers/TeacherController.js
+import mongoose from "mongoose";
+import Teacher from "../models/TeacherModel.js";
 
+export const getTeachers = async (req, res) => {
+  const teachers = await Teacher.find({}).sort({ createdAt: -1 });
+  res.status(200).json(teachers);
+};
 
-const getTeachers = async (req, res) => {
-    const teachers = await Teacher.find({}).sort({ createdAt: -1 })
-    res.status(200).json(teachers)
-}
+export const getTeacher = async (req, res) => {
+  const { id } = req.params;
 
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "Nu au fost gasite rezultate" });
+  }
 
-const getTeacher = async (req, res) => {
-    const { id } = req.params
+  const teacher = await Teacher.findById(id);
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Nu au fost gasite rezultate' })
-    }
+  if (!teacher) {
+    return res.status(404).json({ error: "Nu au fost gasite rezultate" });
+  }
 
-    const teacher = await Teacher.findById(id)
+  res.status(200).json(teacher);
+};
+export const getTeacherByEmail = async (req, res) => {
+  const { email } = req.params;
+  console.log("🚀 ~ getTeacherByEmail ~ email:", email);
 
+  if (!email || typeof email !== "string") {
+    return res.status(400).json({ error: "Email invalid" });
+  }
+
+  try {
+    const teacher = await Teacher.findOne({ Mail: email });
+
+    console.log("🚀 ~ getTeacherByEmail ~ teacher:", teacher);
     if (!teacher) {
-        return res.status(404).json({ error: 'Nu au fost gasite rezultate' })
+      return res.status(404).json({ error: "Nu au fost gasite rezultate" });
     }
 
-    res.status(200).json(teacher)
-}
+    res.status(200).json(teacher);
+  } catch (error) {
+    console.error("Eroare la căutarea profesorului după email:", error);
+    res.status(500).json({ error: "Eroare internă a serverului" });
+  }
+};
 
+export const createTeacher = async (req, res) => {
+  console.log("🚀 ~ createTeacher ~ req.body:", req.body);
+  const { Name, Mail, Phone, Subject } = req.body;
 
-const createTeacher = async (req, res) => {
-  console.log("🚀 ~ createTeacher ~ req.body:", req.body)
-    const { Name, Mail, Phone, Subject } = req.body
+  try {
+    const teacher = await Teacher.create({ Name, Mail, Phone, Subject });
+    res.status(200).json(teacher);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
-    try {
-        const teacher = await Teacher.create({ Name, Mail, Phone, Subject })
-        res.status(200).json(teacher)
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
-}
+export const deleteTeacher = async (req, res) => {
+  const { id } = req.params;
 
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "Nu au fost gasite rezultate" });
+  }
 
-const deleteTeacher = async (req, res) => {
-    const { id } = req.params
+  const teacher = await Teacher.findOneAndDelete({ _id: id });
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Nu au fost gasite rezultate' })
-    }
+  if (!teacher) {
+    return res.status(400).json({ error: "Nu au fost gasite rezultate" });
+  }
 
-    const teacher = await Teacher.findOneAndDelete({ _id: id })
+  res.status(200).json(teacher);
+};
 
-    if (!teacher) {
-        return res.status(400).json({ error: 'Nu au fost gasite rezultate' })
-    }
+export const updateTeacher = async (req, res) => {
+  console.log("updatez...");
+  const { id } = req.params;
 
-    res.status(200).json(teacher)
-}
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "Nu au fost gasite rezultate" });
+  }
 
+  const teacher = await Teacher.findOneAndUpdate(
+    { _id: id },
+    { ...req.body },
+    { new: true }
+  );
 
-const updateTeacher = async (req, res) => {
-    console.log("updatez...")
-    const { id } = req.params
+  if (!teacher) {
+    return res.status(400).json({ error: "Nu au fost gasite rezultate" });
+  }
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Nu au fost gasite rezultate' })
-    }
-
-    const teacher = await Teacher.findOneAndUpdate({ _id: id }, {
-        ...req.body
-    }, { new: true })
-
-    if (!teacher) {
-        return res.status(400).json({ error: 'Nu au fost gasite rezultate' })
-    }
-
-    res.status(200).json(teacher)
-}
-
-module.exports = {
-    getTeachers,
-    getTeacher,
-    createTeacher,
-    deleteTeacher,
-    updateTeacher
-}
+  res.status(200).json(teacher);
+};

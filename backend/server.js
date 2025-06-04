@@ -1,34 +1,52 @@
-require('dotenv').config()
-const express = require('express')
-const mongoose = require ('mongoose')
-const cors = require('cors')
-const studentRoutes = require('./routes/StudentRoutes')
-const teacherRoutes = require('./routes/TeacherRoutes')
+// server.js
+import "dotenv/config"; // runs dotenv.config() automatically
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
 
+// Your route modules
+import studentRoutes from "./routes/StudentRoutes.js";
+import teacherRoutes from "./routes/TeacherRoutes.js";
+import classEventsRoutes from "./routes/ClassEventRoutes.js";
+import groupRoutes from "./routes/GroupRoutes.js";
+import userRoutes from "./routes/UsersRoutes.js";
+
+// Clerk middleware
+import { clerkMiddleware } from "@clerk/express";
 
 // express app
-const app = express()
+const app = express();
 
-app.use(cors())
+app.use(cors());
+app.use(express.json());
 
-app.use(express.json())
+// Attach Clerk auth middleware
+app.use(clerkMiddleware());
 
-app.use((req, res, next) =>{
-    console.log(req.path, req.method)
-    next()
-})
+// Simple logger
+app.use((req, res, next) => {
+  console.log(req.path, req.method);
+  next();
+});
 
-app.use('/api/student', studentRoutes)
-app.use('/api/teacher', teacherRoutes)
+// Mount your routes
+app.use("/api/student", studentRoutes);
+app.use("/api/teacher", teacherRoutes);
+app.use("/api/classEvent", classEventsRoutes);
+app.use("/api/group", groupRoutes);
+app.use("/api/users", userRoutes);
 
-mongoose.connect(process.env.MONGO_URI)
-.then(()=> {
-    app.listen(process.env.PORT, ()=> {
-        console.log('connected to db & listening on port ', process.env.PORT)
-    })
-})
-.catch((error) => {
-    console.log(error)
-})
+// Connect to Mongo
+const uri = process.env.MONGO_URI;
+const port = process.env.PORT || 3000;
 
-
+mongoose
+  .connect(uri)
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`✅ Connected to MongoDB & listening on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB connection error:", err);
+  });

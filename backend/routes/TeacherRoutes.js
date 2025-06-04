@@ -1,22 +1,20 @@
-const express = require('express')
-const {
+import express from "express";
+import {
   createTeacher,
   deleteTeacher,
   getTeacher,
   getTeachers,
-  updateTeacher
-} = require('../controllers/TeacherController')
+  updateTeacher,
+  getTeacherByEmail,
+} from "../controllers/TeacherController.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/', getTeachers)
+router.get("/", getTeachers);
+router.get("/email/:email", getTeacherByEmail);
+router.get("/:id", getTeacher);
+router.post("/", createTeacher);
+router.delete("/:id", deleteTeacher);
+router.patch("/:id", updateTeacher);
 
-router.get('/:id', getTeacher)
-
-router.post('/', createTeacher)
-
-router.delete('/:id', deleteTeacher)
-
-router.patch('/:id', updateTeacher)
-
-module.exports = router
+export default router;
