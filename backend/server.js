@@ -11,7 +11,7 @@ import classEventsRoutes from "./routes/ClassEventRoutes.js";
 import groupRoutes from "./routes/GroupRoutes.js";
 import userRoutes from "./routes/UsersRoutes.js";
 import absenceRoutes from "./routes/AbsenceRoutes.js";
-import gradeRoutes from "./routes/GradeRoutes.js";
+import evaluationRoutes from "./routes/EvaluationRoutes.js";
 
 // Clerk middleware
 import { clerkMiddleware } from "@clerk/express";
@@ -39,7 +39,7 @@ app.use("/api/group", groupRoutes);
 app.use("/api/users", userRoutes);
 
 app.use("/api/absences", absenceRoutes);
-app.use("/api/grades", gradeRoutes);
+app.use("/api/evaluations", evaluationRoutes);
 // Connect to Mongo
 const uri = process.env.MONGO_URI;
 const port = process.env.PORT || 3000;

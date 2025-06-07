@@ -3,6 +3,7 @@ import { getGroups } from "./GroupApi";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { AddGroupDialog } from "./AddGroup";
+import { Group } from "./types";
 
 export default function Groups() {
     const { data, isLoading, error } = useQuery({
@@ -19,6 +20,6 @@ export default function Groups() {
     }
     return <div>
         <AddGroupDialog />
-        <DataTable data={data} columns={columns} />
+        <DataTable data={data as Group[]} columns={columns} />
     </div>
 }

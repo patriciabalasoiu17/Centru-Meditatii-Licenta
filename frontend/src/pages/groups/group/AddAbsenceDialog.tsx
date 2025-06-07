@@ -9,47 +9,93 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { MultiSelect } from "@/components/ui/multi-select"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { toast } from "sonner"
-import { Edit } from "lucide-react"
 import { Student } from "@/pages/student/types"
-import { getAbsencesForStudent } from "./AbsenceApi"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useState } from "react"
 import { useParams } from "react-router-dom"
+import { toast } from "sonner"
+import { addAbsence, deleteAbsence, getAbsencesForStudent } from "./AbsenceApi"
 
 export function AddAbsenceDialog({ student }: { student: Student }) {
-    console.log("🚀 ~ AddAbsenceDialog ~ student:", student)
 
     const params = useParams();
 
-    if (!params.name) {
+    if (!params.name || !params.id) {
         return <div>Parametru invalid</div>;
     }
-    const groupId = params.id;
+
+
+    const groupName = params.name || "";
+    const classEventId = params.id || ""
+
+    const [open, setOpen] = useState(false);
+    const [reason, setReason] = useState("");
+
+
+    const queryClient = useQueryClient();
+
+    const addMutation = useMutation({
+        mutationFn: addAbsence,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["absences", student._id] });
+            toast.success("Absență adăugată cu succes.");
+            setOpen(false);
+        },
+        onError: () => {
+            toast.error("Ceva nu a funcționat...");
+            setOpen(false);
+
+        }
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: () => deleteAbsence(student._id as string, groupName, classEventId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["absences", student._id] });
+            toast.success("Absență adăugată cu succes.");
+            setOpen(false);
+        },
+        onError: () => {
+            toast.error("Ceva nu a funcționat...");
+            setOpen(false);
+
+        }
+    });
 
     const { data: existingAbsences } = useQuery({
         queryKey: ["absences", student._id],
         queryFn: () => getAbsencesForStudent(student._id as string),
+        enabled: !!student._id,
     });
+    console.log("🚀 ~ AddAbsenceDialog ~ existingAbsences:", existingAbsences)
 
-    console.log("🚀 ~ AddAbsenceDialog ~ data:", existingAbsences)
 
     const alreadyAbsent = existingAbsences?.some(
         (absence) =>
-            absence.groupId === groupId
+            absence.groupName === groupName && absence.classEventId == classEventId
     );
-    console.log("🚀 ~ AddAbsenceDialog ~ alreadyAbsent:", alreadyAbsent)
+
+    const handleSubmit = () => {
+        addMutation.mutate({ studentId: student._id || "", groupName: groupName, classEventId: classEventId, date: new Date(), reason: reason })
+    }
+
+    const deleteAbsenceOnClick = () => {
+        if (alreadyAbsent)
+            deleteMutation.mutate()
+    }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen} >
             <DialogTrigger asChild>
-                <Button variant="outline">Adaugă Absență</Button>
+                <div>
+                    <Button variant="outline" className={alreadyAbsent ? "bg-red-300" : "bg-amber-300"} onClick={deleteAbsenceOnClick}>
+                        {alreadyAbsent ? "Șterge Absență" : "Adaugă Absență"}
+                    </Button>
+                </div>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
+                    <DialogTitle>Aduagă absență</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
@@ -58,11 +104,18 @@ export function AddAbsenceDialog({ student }: { student: Student }) {
                         </Label>
                         <Input id="name" placeholder="Introdu numele grupei" value={student.Name} disabled />
                     </div>
-
                 </div>
 
+                <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-2">
+                        <Label htmlFor="name" >
+                            Motivație (opțional)
+                        </Label>
+                        <Input id="name" placeholder="Introdu numele grupei" onChange={(e) => setReason(e.target.value)} value={reason} />
+                    </div>
+                </div>
                 <DialogFooter>
-                    <Button>Salvează grupa</Button>
+                    <Button onClick={handleSubmit}>Adaugă absență</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

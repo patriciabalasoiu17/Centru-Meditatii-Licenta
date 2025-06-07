@@ -1,11 +1,12 @@
 import axios from "axios";
-import { Absence } from "./types";
+import { Absence } from "@/lib/types";
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}/absences`;
 
 export const addAbsence = async (absence: {
   studentId: string;
-  groupId: string;
+  groupName: string;
+  classEventId: string;
   date: Date;
   reason: string;
 }) => {
@@ -17,5 +18,10 @@ export const getAbsencesForStudent = async (
   studentId: string
 ): Promise<Absence[]> => {
   const response = await axios.get(`${BASE_URL}/student/${studentId}`);
+  return response.data;
+};
+
+export const deleteAbsence = async (studentId: string, groupId: string, classEventId: string) => {
+  const response = await axios.delete(`${BASE_URL}/${studentId}/${groupId}/${classEventId}`);
   return response.data;
 };

@@ -1,10 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { type Group } from "./types"
-import TeacherHeader from "./TeacherHeader"
-import StudentHeader from "./StudentHeader"
-import { Library } from "lucide-react"
-import DeleteGroup from "./DeleteGroup"
 import { AddGroupDialog } from "./AddGroup"
+import DeleteGroup from "./DeleteGroup"
+import StudentHeader from "./StudentHeader"
+import TeacherHeader from "./TeacherHeader"
+import { type Group } from "./types"
 
 export const columns: ColumnDef<Group>[] = [
     {
@@ -15,10 +14,6 @@ export const columns: ColumnDef<Group>[] = [
         accessorKey: "teacherId",
         header: "Profesor",
         cell: (props) => <TeacherHeader teacherId={props.getValue() as string} />
-    },
-    {
-        header: "Catalog",
-        cell: () => <Library />
     },
     {
         accessorKey: "subject",

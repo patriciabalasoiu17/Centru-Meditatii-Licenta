@@ -7,7 +7,6 @@ export const getGroups = async (req, res) => {
 
   try {
     if (name) {
-      // filtrare după nume și opțional teacherId
       const query = { name };
       if (teacherId) query.teacherId = teacherId;
 
@@ -19,7 +18,6 @@ export const getGroups = async (req, res) => {
       return res.status(200).json(group);
     }
 
-    // dacă nu există name, returnează toate grupurile (sau filtrate după teacherId)
     const groups = teacherId
       ? await Group.find({ teacherId }).sort({ createdAt: -1 })
       : await Group.find({}).sort({ createdAt: -1 });

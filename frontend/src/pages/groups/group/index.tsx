@@ -41,7 +41,6 @@ export default function Group() {
     if (isStudentsError) return <div>Eroare la încărcarea studenților.</div>;
 
     const students = studentQueries.map((q) => q.data).filter(Boolean);
-    console.log("🚀 ~ Group ~ students:", students)
 
     return (
         <div>

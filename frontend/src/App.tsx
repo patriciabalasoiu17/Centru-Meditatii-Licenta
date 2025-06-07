@@ -9,6 +9,7 @@ import Groups from "./pages/groups";
 import Group from "./pages/groups/group";
 import { Toaster } from "sonner";
 import Users from "./pages/users";
+import Catalog from "./pages/student/catalog";
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="group/:id/:name" element={<Group />} />
           <Route path="/calendar/:id" element={<TeacherCalendar />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/catalog/:studentId" element={<Catalog />} />
         </Route>
       </Routes>
       <Toaster richColors />

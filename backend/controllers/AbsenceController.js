@@ -14,3 +14,19 @@ export const getAbsencesByStudent = async (req, res) => {
   const absences = await Absence.find({ studentId });
   res.json(absences);
 };
+
+export const deleteAbsence = async (req, res) => {
+  const { studentId, groupName, classEventId } = req.params;
+
+  try {
+    const deleted = await Absence.findOneAndDelete({ studentId, groupName, classEventId });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Absența nu a fost găsită." });
+    }
+
+    res.status(200).json({ message: "Absența a fost ștearsă cu succes." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

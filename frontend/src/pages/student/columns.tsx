@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { type Student } from "./types"
 import { AddStudentDialog } from "./AddStudentDialog"
 import { Library } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 
 export const columns: ColumnDef<Student>[] = [
@@ -23,7 +24,10 @@ export const columns: ColumnDef<Student>[] = [
     },
     {
         header: "Catalog",
-        cell: () => <Library />
+        cell: (props) => {
+            const navigate = useNavigate();
+            return <Library onClick={() => navigate(`/catalog/${(props.row.original as Student)._id}`)} />
+        }
     },
     {
         header: "Edit",

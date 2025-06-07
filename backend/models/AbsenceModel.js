@@ -6,10 +6,14 @@ const AbsenceSchema = new mongoose.Schema({
     ref: "Student",
     required: true,
   },
-  groupId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Group",
+  groupName: {
+    type: String,
     required: true,
+  },
+  classEventId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ClassEvent",
+    required: true
   },
   date: { type: Date, required: true },
   reason: { type: String },
