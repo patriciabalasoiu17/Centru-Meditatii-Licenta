@@ -30,8 +30,9 @@ export const getEvaluation = async (req, res) => {
 };
 
 export const getStudentEvaluation = async (req, res) => {
+  const { studentId } = req.params;
   try {
-    const evaluations = await Evaluation.find();
+    const evaluations = await Evaluation.find({ studentId });
 
     const groupCache = new Map();
     const grouped = {};
@@ -82,7 +83,16 @@ export const getStudentEvaluationsWithGrade = async (req, res) => {
 
 export const getEvaluationsGroupedBySubject = async (req, res) => {
   try {
-    const evaluations = await Evaluation.find({ grade: { $ne: null } });
+    const { studentId } = req.params;
+
+    if (!studentId) {
+      return res.status(400).json({ error: "Missing studentId parameter" });
+    }
+
+    const evaluations = await Evaluation.find({
+      studentId,
+      grade: { $ne: null },
+    });
 
     const groupCache = new Map();
     const grouped = {};
