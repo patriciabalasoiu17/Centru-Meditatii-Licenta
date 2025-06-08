@@ -31,6 +31,7 @@ export default function StudentEvaluationDialog({ student }: { student: Student 
     const [gradeEnabled, setGradeEnabled] = useState(false);
 
     const [behavior, setBehavior] = useState("");
+    const [homework, setHomework] = useState("");
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [editingSubjectIndex, setEditingSubjectIndex] = useState<number | null>(null);
 
@@ -84,7 +85,8 @@ export default function StudentEvaluationDialog({ student }: { student: Student 
             gaps,
             ...(gradeEnabled
                 ? { grade, gradeComment }
-                : { grade: null, gradeComment: "" })
+                : { grade: null, gradeComment: "" }),
+            homework
         }
 
         submitEvaluation(payload);
@@ -277,6 +279,16 @@ export default function StudentEvaluationDialog({ student }: { student: Student 
                             placeholder="Introduceți observațiile..."
                             value={behavior}
                             onChange={(e) => setBehavior(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label>Temă pentru acasa:</Label>
+                        <Textarea
+                            rows={4}
+                            placeholder="Introduceți tema..."
+                            value={homework}
+                            onChange={(e) => setHomework(e.target.value)}
                         />
                     </div>
 

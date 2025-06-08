@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 import Group from "../models/GroupModel.js";
 
-export const getGroups = async (req, res) => {
+export const getGroups = async (req, res) => { 
   const { teacherId, name } = req.query;
 
   try {
@@ -32,12 +32,7 @@ export const getGroups = async (req, res) => {
 export const getGroup = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Nu au fost gasite rezultate" });
-  }
-
-  const group = await Group.findById();
-  console.log("🚀 ~ getGroup ~ group:", group);
+  const group = await Group.findById(id);
 
   if (!group) {
     return res.status(404).json({ error: "Nu au fost gasite rezultate" });
@@ -74,7 +69,6 @@ export const deleteGroup = async (req, res) => {
 };
 
 export const updateGroup = async (req, res) => {
-  console.log("🚀 ~ updateGroup ~ req.body:", req.body);
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {

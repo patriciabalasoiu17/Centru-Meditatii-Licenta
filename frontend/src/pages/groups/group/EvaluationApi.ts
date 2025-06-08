@@ -18,8 +18,6 @@ export const getGradeEvaluationsForStudent = async (studentId: string): Promise<
   return data;
 }
 export const getEvaluationsForStudent = async (studentId: string): Promise<Evaluation> => {
-  console.log("ALO???")
-  console.log("🚀 ~ getEvaluationsForStudent ~ `${BASE_URL}/${studentId}`:", `${BASE_URL}/${studentId}`)
   const { data } = await axios.get(`${BASE_URL}/${studentId}`)
   return data;
 }

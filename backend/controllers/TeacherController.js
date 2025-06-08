@@ -22,9 +22,9 @@ export const getTeacher = async (req, res) => {
 
   res.status(200).json(teacher);
 };
+
 export const getTeacherByEmail = async (req, res) => {
   const { email } = req.params;
-  console.log("🚀 ~ getTeacherByEmail ~ email:", email);
 
   if (!email || typeof email !== "string") {
     return res.status(400).json({ error: "Email invalid" });
@@ -33,7 +33,6 @@ export const getTeacherByEmail = async (req, res) => {
   try {
     const teacher = await Teacher.findOne({ Mail: email });
 
-    console.log("🚀 ~ getTeacherByEmail ~ teacher:", teacher);
     if (!teacher) {
       return res.status(404).json({ error: "Nu au fost gasite rezultate" });
     }
@@ -46,7 +45,6 @@ export const getTeacherByEmail = async (req, res) => {
 };
 
 export const createTeacher = async (req, res) => {
-  console.log("🚀 ~ createTeacher ~ req.body:", req.body);
   const { Name, Mail, Phone, Subject } = req.body;
 
   try {
@@ -74,7 +72,6 @@ export const deleteTeacher = async (req, res) => {
 };
 
 export const updateTeacher = async (req, res) => {
-  console.log("updatez...");
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {

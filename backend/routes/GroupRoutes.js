@@ -11,7 +11,7 @@ import {
 const router = Router();
 
 router.get("/", getGroups);
-router.get("/:name", getGroup);
+// router.get("/:name", getGroup);
 router.get("/:id", getGroup);
 router.post("/", createGroup);
 router.delete("/:id", deleteGroup);

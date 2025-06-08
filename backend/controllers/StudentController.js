@@ -1,14 +1,11 @@
-// controllers/StudentController.js
 import mongoose from "mongoose";
 import Student from "../models/StudentModel.js";
 
-// Get all students
 export const getStudents = async (req, res) => {
   const students = await Student.find({}).sort({ createdAt: -1 });
   res.status(200).json(students);
 };
 
-// Get a single student by ID
 export const getStudent = async (req, res) => {
   const { id } = req.params;
 
@@ -25,9 +22,29 @@ export const getStudent = async (req, res) => {
   res.status(200).json(student);
 };
 
-// Create a new student
+
+export const getStudentByEmail = async (req, res) => {
+  const { email } = req.params;
+
+  if (!email || typeof email !== "string") {
+    return res.status(400).json({ error: "Email invalid" });
+  }
+
+  try {
+    const student = await Student.findOne({ Mail: email });
+
+    if (!student) {
+      return res.status(404).json({ error: "Nu au fost gasite rezultate" });
+    }
+
+    res.status(200).json(student);
+  } catch (error) {
+    console.error("Eroare la căutarea elevului după email:", error);
+    res.status(500).json({ error: "Eroare internă a serverului" });
+  }
+};
+
 export const createStudent = async (req, res) => {
-  console.log("🚀 ~ createStudent ~ req.body:", req.body);
   const { Name, Mail, Phone, Year } = req.body;
 
   try {
@@ -38,7 +55,6 @@ export const createStudent = async (req, res) => {
   }
 };
 
-// Delete a student
 export const deleteStudent = async (req, res) => {
   const { id } = req.params;
 
@@ -55,9 +71,7 @@ export const deleteStudent = async (req, res) => {
   res.status(200).json(student);
 };
 
-// Update a student
 export const updateStudent = async (req, res) => {
-  console.log("updatez...");
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {

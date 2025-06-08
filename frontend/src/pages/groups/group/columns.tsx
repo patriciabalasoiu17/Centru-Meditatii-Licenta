@@ -17,9 +17,4 @@ export const columns: ColumnDef<Student>[] = [
         accessorKey: "Status Fișă",
         cell: (props) => <AddStudentEvaluationDialog student={props.row.original} />
     },
-    {
-        header: "Temă",
-    },
-
-
 ]

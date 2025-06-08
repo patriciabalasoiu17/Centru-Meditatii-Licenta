@@ -8,11 +8,8 @@ export default function BigCalendar({ teacherId }: { teacherId: string }) {
         queryKey: ["classEvents"],
         queryFn: () => getClassEvents({ teacherId }),
     });
-    console.log("🚀 ~ BigCalendar ~ data:", data)
 
     const navigate = useNavigate()
-
-
 
     return (
         <div>

@@ -46,7 +46,6 @@ export const addClassEvent = async (classEvent: ClassEvent) => {
     (classEvent.end.valueOf() - classEvent.start.valueOf()) /
       (1000 * 60 * 60 * 24 * 7)
   );
-  console.log("🚀 ~ addClassEvent ~ weeksOfOccurence:", weeksOfOccurence);
 
   if (weeksOfOccurence == 0) {
     await axios.post(BASE_URL, classEvent);

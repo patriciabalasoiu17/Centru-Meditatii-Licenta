@@ -7,6 +7,9 @@ import { DataTable } from "./data-table";
 import { absenceColumns } from "./columns/absenceColumn";
 import { gradesPerSubjectColumns, GradeSummary } from "./columns/gradesPerSubjectColumns";
 import { allGradesFlatColumns, FlatEvaluation } from "./columns/allGradesFlatColumns";
+import BarChartMedii from "./charts/BarChartAverageGrade";
+import LineChartEvolutie from "./charts/LineChartGradeEvolution";
+import PieChartAbsences from "./charts/PieChartAbsencesPerGroup";
 
 export default function StudentCatalogPage() {
     const studentId = useParams().studentId || "";
@@ -34,8 +37,9 @@ export default function StudentCatalogPage() {
         isLoading: loadingEvaluations,
         error: errorEvaluations,
     } = useQuery({
-        queryKey: ["evaluationsNoGrades"],
+        queryKey: ["evaluationsNoGrades", studentId],
         queryFn: () => getEvaluationsForStudent(studentId),
+        enabled: !!studentId,
     });
 
     if (loadingAbsences || loadingGrades) return <div>Loading...</div>;
@@ -61,8 +65,8 @@ export default function StudentCatalogPage() {
     });
 
 
-    const allGradesFlatData: FlatEvaluation[] = Object.entries(evaluations).flatMap(([subject, entries]) =>
-        entries.map(entry => ({
+    const allGradesFlatData: FlatEvaluation[] = Object.entries(evaluations ?? {}).flatMap(([subject, entries]) =>
+        entries?.map(entry => ({
             subject,
             grade: entry.grade ?? "-",
             date: new Date(entry.createdAt).toISOString().split("T")[0],
@@ -76,21 +80,42 @@ export default function StudentCatalogPage() {
                 entry.subjects?.map((s: any) =>
                     `${s.name}: Înțelegere - ${s.understanding || "-"}, Exerciții - ${s.exercises || "-"}`
                 ) || [],
+            homework: entry.homework
         }))
     );
 
     return (
         <div className="space-y-8 px-4">
             <div className="text-xl font-bold">Catalog</div>
+            <div className="grid grid-cols-3 grid-rows-3 gap-x-6">
+                <div className="col-span-1 row-span-1 ">
+                    <h2 className="text-xl font-semibold">Absențe</h2>
+                    <DataTable data={absences} columns={absenceColumns} />
+                </div>
+                <div className="col-span-1 row-span-1">
+                    <h2 className="text-xl font-semibold">Note pe materii</h2>
+                    <DataTable data={gradesPerSubjectData} columns={gradesPerSubjectColumns} />
+                </div>
 
-            <h2 className="text-xl font-semibold">Absențe</h2>
-            <DataTable data={absences} columns={absenceColumns} />
+                <div className="col-span-3 row-span-2">
+                    <h2 className="text-xl font-semibold">Toate evaluările</h2>
+                    <DataTable data={allGradesFlatData} columns={allGradesFlatColumns} />
+                </div>
+                <div className="col-span-1 row-span-1">
+                    <h3 className="text-lg font-semibold mb-2">Media notelor pe materii</h3>
+                    {gradesPerSubjectData.length == 0 ? <div className="font-bold text-xl flex justify-center items-center h-full">Nu există suficiente date pentru a crea graficul </div> : <BarChartMedii data={gradesPerSubjectData} />}
+                </div>
+                <div className="col-span-1 row-span-1">
+                    <h3 className="text-lg font-semibold mb-2">Evoluția notelor în timp</h3>
+                    {allGradesFlatData.length == 0 ? <div className="font-bold text-xl flex justify-center items-center h-full">Nu există suficiente date pentru a crea graficul </div> : <LineChartEvolutie data={allGradesFlatData} />}
+                </div>
+                <div className="col-span-1 row-span-1">
+                    <h3 className="text-lg font-semibold mb-2">Distribuția absențelor pe grupe</h3>
+                    {absences.length == 0 ? <div className="font-bold text-xl flex justify-center items-center h-full">Nu există suficiente date pentru a crea graficul </div> : <PieChartAbsences data={absences} />
+                    }
+                </div>
 
-            <h2 className="text-xl font-semibold">Note pe materii</h2>
-            <DataTable data={gradesPerSubjectData} columns={gradesPerSubjectColumns} />
-
-            <h2 className="text-xl font-semibold">Toate evaluările</h2>
-            <DataTable data={allGradesFlatData} columns={allGradesFlatColumns} />
+            </div>
         </div>
     );
 }

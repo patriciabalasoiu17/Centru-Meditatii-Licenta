@@ -25,7 +25,6 @@ export const columns: ColumnDef<Student>[] = [
     {
         header: "Catalog",
         cell: (props) => {
-            console.log("🚀 ~ props:", props.row.original)
             const navigate = useNavigate();
             return <Library onClick={() => navigate(`/catalog/${(props.row.original as Student)._id}`)} />
         }

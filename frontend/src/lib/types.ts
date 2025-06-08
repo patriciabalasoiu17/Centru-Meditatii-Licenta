@@ -28,4 +28,5 @@ export interface Evaluation {
     gaps: Gap[];
     grade?: number | null;
     gradeComment?: string;
+    homework?: string;
 }

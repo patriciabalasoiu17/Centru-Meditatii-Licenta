@@ -21,6 +21,31 @@ export const getGroups = async ({
   return response.data;
 };
 
+
+export const getGroupsByTeacherId = async ({
+  teacherId,
+}: {
+  teacherId?: string;
+}): Promise<Group[]> => {
+  var url = BASE_URL;
+  if (teacherId) {
+    url += `?teacherId=${teacherId}`;
+  }
+
+  const response = await axios.get(url);
+  return response.data;
+};
+
+export const getGroupByName = async ({
+  name,
+}: {
+  name?: string;
+}): Promise<Group> => {
+  var url = `${BASE_URL}?name=${name}`;
+  const response = await axios.get(url);
+  return response.data;
+};
+
 export const getGroup = async (id: string): Promise<Group> => {
   const res = await axios.get(`${BASE_URL}/${id}`);
   return res.data;

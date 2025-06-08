@@ -39,7 +39,6 @@ export function AddTeacherDialog({ id }: { id?: string }) {
             setPhone(teacherData.Phone);
             setSubject([...teacherData.Subject]);
 
-            console.log("🚀 ~ useEffect ~ teacherData.Subject:", subject)
         }
     }, [teacherData]);
 

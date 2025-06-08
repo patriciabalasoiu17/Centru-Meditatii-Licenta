@@ -1,6 +1,7 @@
 // controllers/ClassEventController.js
 import mongoose from "mongoose";
 import ClassEvent from "../models/ClassEventModel.js";
+import Group from "../models/GroupModel.js";
 
 export const getClassEventsForTeacher = async (req, res) => {
   const { teacherId } = req.query;
@@ -13,6 +14,25 @@ export const getClassEventsForTeacher = async (req, res) => {
     res.status(200).json(teachers);
   }
 
+};
+export const getClassEventsForStudent = async (req, res) => {
+  const { studentId } = req.query;
+
+  if (!studentId) {
+    return res.status(400).json({ error: "studentId este necesar" });
+  }
+
+  try {
+    const groups = await Group.find({ students: studentId });
+    const groupNames = groups.map((g) => g.name);
+
+    const events = await ClassEvent.find({ title: { $in: groupNames } }).sort({ start: 1 });
+
+    res.status(200).json(events);
+  } catch (error) {
+    console.error("Eroare la obținerea evenimentelor:", error);
+    res.status(500).json({ error: error.message });
+  }
 };
 
 export const getClassEvent = async (req, res) => {
@@ -33,10 +53,6 @@ export const getClassEvent = async (req, res) => {
 
 export const createClassEvent = async (req, res) => {
   const { title, start, end, teacherId } = req.body;
-  console.log("🚀 ~ createClassEvent ~ title:", title);
-  console.log("🚀 ~ createClassEvent ~ teacherId:", teacherId);
-  console.log("🚀 ~ createClassEvent ~ end:", end);
-  console.log("🚀 ~ createClassEvent ~ start:", start);
 
   try {
     const classEvent = await ClassEvent.create({
@@ -68,7 +84,6 @@ export const deleteClassEvent = async (req, res) => {
 };
 
 export const updateClassEvent = async (req, res) => {
-  console.log("🚀 ~ updateClassEvent ~ req.body:", req.body);
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {

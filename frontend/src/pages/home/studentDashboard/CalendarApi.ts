@@ -13,8 +13,21 @@ export interface ClassEvent extends Event {
   __v?: number;
 }
 
-export const getAllClassEvents = async () => {
-  const response = await axios.get(`${BASE_URL}`);
+export const getClassEvents = async ({ teacherId }: { teacherId: string }) => {
+  const response = await axios.get(`${BASE_URL}?teacherId=${teacherId}`);
+
+  return (response.data as ClassEvent[]).map((e) => {
+    return {
+      ...e,
+      start: moment(e.start).toDate(),
+      end: moment(e.end).toDate(),
+    };
+  });
+};
+
+
+export const getClassEventsForStudent = async ({ studentId }: { studentId: string }) => {
+  const response = await axios.get(`${BASE_URL}/student?studentId=${studentId}`);
 
   return (response.data as ClassEvent[]).map((e) => {
     return {

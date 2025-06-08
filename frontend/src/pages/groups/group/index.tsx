@@ -1,5 +1,5 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
-import { getGroups } from "../GroupApi";
+import { getGroupByName } from "../GroupApi";
 import { useParams } from "react-router-dom";
 import { type Group } from "../types";
 import { getStudent } from "@/pages/student/StudentApi";
@@ -22,7 +22,7 @@ export default function Group() {
         error,
     } = useQuery({
         queryKey: ["group", groupName],
-        queryFn: () => getGroups({ name: groupName }),
+        queryFn: () => getGroupByName({ name: groupName }),
     });
 
     const studentQueries = useQueries({
@@ -45,7 +45,7 @@ export default function Group() {
     const students = studentQueries.map((q) => q.data).filter(Boolean);
 
     return (
-        <div>
+        <div className="w-[85%] p-4">
             <DataTable data={students as Student[]} columns={columns} />
         </div>
     );

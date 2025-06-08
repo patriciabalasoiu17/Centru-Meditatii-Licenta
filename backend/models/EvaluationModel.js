@@ -28,6 +28,7 @@ const EvaluationSchema = new mongoose.Schema({
   behavior: String,
   subjects: [SubjectSchema],
   gaps: [GapSchema],
+  homework: String
 }, {
   timestamps: true,
 });

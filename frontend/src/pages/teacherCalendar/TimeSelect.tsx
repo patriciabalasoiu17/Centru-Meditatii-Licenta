@@ -20,7 +20,6 @@ export function TimeSelect() {
         }
     }
     
-    console.log("🚀 ~ TimeSelect ~ hours:", hours)
     return (
         <Select>
             <SelectTrigger className="w-[180px]">

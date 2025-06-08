@@ -1,8 +1,8 @@
 export interface ClassEvent {
   _id?: string;
   title: string;
-  startDate: Date;
-  endDate: Date;
+  start: Date;
+  end: Date;
   createdAt?: string;
   updatedAt?: string;
   __v?: number;

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUsers, getUsersWithoutRole } from "./UserApi";
+import {  getUsersWithoutRole } from "./UserApi";
 import { RequestDataTable } from "./requestDatatable";
 import { requestColumns } from "./requestColumns";
 import { TeacherDatatable } from "./teacherDatatable";
@@ -16,7 +16,6 @@ export default function Users() {
     queryKey: ["users"],
     queryFn: getUsersWithoutRole,
   });
-  console.log("🚀 ~ Users ~ requests:", requests)
 
   const { data: teachers, isLoading: isLoadingTeachers, error: errorTeachers } = useQuery({
     queryKey: ["teachers"],

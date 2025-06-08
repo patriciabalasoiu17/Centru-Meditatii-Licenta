@@ -12,14 +12,15 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { TimePickerInput } from "@/components/ui/timepicker"
 import { getTeachers } from "@/pages/teacher/TeacherApi"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { toast } from "sonner"
-import { addClassEvent } from "./CalendarApi"
+import { deleteClassEvent, updateClassEvent } from "./CalendarApi"
 import { Teacher } from "@/pages/teacher/types"
-import { getGroupsByTeacherId } from "@/pages/groups/GroupApi"
+import { getGroupByName, getGroupsByTeacherId } from "@/pages/groups/GroupApi"
 import { Group } from "@/pages/groups/types"
+import { ClassEvent } from "@/pages/teacherCalendar/CalendarApi"
 
-export function AddEventDialog() {
+export function UpdateEventDialog({ classEvent }: { classEvent: ClassEvent | undefined }) {
     const [teacherId, setTeacherId] = useState<string>();
     const [groupName, setGroupName] = useState<string>();
     const [startDate, setStartDate] = useState<Date | undefined>(new Date());
@@ -40,6 +41,22 @@ export function AddEventDialog() {
         }
     }
 
+    const { data: selectedGroup } = useQuery(
+        {
+            queryKey: ["group", classEvent?.title],
+            queryFn: () => getGroupByName({ name: classEvent?.title }),
+        }
+    )
+    useEffect(() => {
+        if (selectedGroup != undefined) {
+            setTeacherId((selectedGroup as Group).teacherId)
+        }
+        setGroupName(classEvent?.title)
+        setStartDate(classEvent?.start)
+        setEndDate(classEvent?.end)
+        setError("")
+    }, [classEvent, open])
+
 
     const { data: teachers } = useQuery({
         queryKey: ["teachers",],
@@ -55,14 +72,30 @@ export function AddEventDialog() {
 
 
     const queryClient = useQueryClient();
-    const addMutation = useMutation({
-        mutationFn: addClassEvent,
+    const updateMutation = useMutation({
+        mutationFn: updateClassEvent,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["classEvents"] });
-            toast.success("Sedinta adaugată cu succes.");
+            toast.success("Sedinta modificată cu succes.");
+            setOpen(false);
         },
         onError: () => {
             toast.error("Ceva nu a functionat...");
+            setOpen(false);
+
+        }
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: deleteClassEvent,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["classEvents"] });
+            toast.success("Sedinta ștearsă cu succes.");
+            setOpen(false);
+        },
+        onError: () => {
+            toast.error("Ceva nu a functionat...");
+            setOpen(false);
         }
     });
 
@@ -76,8 +109,9 @@ export function AddEventDialog() {
         }
         if (teacherId == "" || groupName == "" || startDate == undefined || endDate == undefined) {
             setError("Toate câmpurile sunt obligatorii!")
+            return;
         }
-        addMutation.mutate({ title: groupName, start: startDate, end: endDate, teacherId: teacherId })
+        updateMutation.mutate({ id: classEvent?._id as string, classEvent: { title: groupName, start: startDate, end: endDate } })
 
         setGroupName("")
         setTeacherId("")
@@ -86,13 +120,18 @@ export function AddEventDialog() {
         setOpen(false)
     }
 
+    const handleDelete = () => {
+        if (classEvent?._id)
+            deleteMutation.mutate(classEvent?._id)
+    }
+
 
 
 
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
             <DialogTrigger asChild>
-                <Button className="max-w-[12rem] mb-4">Adaugă ședința</Button>
+                <Button className="max-w-[12rem] mb-4" disabled={classEvent ? false : true}>Modifica ședința</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -195,6 +234,7 @@ export function AddEventDialog() {
 
                 {error && <div className="text-red-500">{error}</div>}
                 <Button onClick={() => handleOnClick()}>Salvează ședința</Button>
+                <Button variant={"destructive"} onClick={() => handleDelete()}>Șterge ședința</Button>
             </DialogContent>
         </Dialog>
     )

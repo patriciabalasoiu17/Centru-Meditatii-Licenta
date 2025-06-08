@@ -6,11 +6,13 @@ import {
   deleteClassEvent,
   getClassEvent,
   getClassEventsForTeacher,
+  getClassEventsForStudent,
 } from "../controllers/ClassEventController.js";
 
 const router = Router();
 
 router.get("/", getClassEventsForTeacher);
+router.get("/student", getClassEventsForStudent)
 router.get("/:id", getClassEvent);
 router.post("/", createClassEvent);
 router.delete("/:id", deleteClassEvent);

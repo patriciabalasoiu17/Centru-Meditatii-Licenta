@@ -52,4 +52,5 @@ export const allGradesFlatColumns: ColumnDef<FlatEvaluation>[] = [
             </div>
         ),
     },
+    { accessorKey: "homework", header: "Temă pentru acasă" },
 ];

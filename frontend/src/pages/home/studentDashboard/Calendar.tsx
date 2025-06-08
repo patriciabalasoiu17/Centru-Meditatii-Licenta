@@ -2,8 +2,8 @@ import {
     Calendar as BigCalendar,
     CalendarProps,
     momentLocalizer,
+    View,
     Views,
-    View
 } from "react-big-calendar";
 import moment from "moment";
 import { SetStateAction, useCallback, useState } from "react";
@@ -18,6 +18,6 @@ export default function Calendar(props: Omit<CalendarProps, "localizer">) {
     const onNavigate = useCallback((newDate: SetStateAction<Date>) => setDate(newDate), [setDate])
     const onView = useCallback((newView: View) => setView(newView), [setView])
 
-    return <BigCalendar {...props} localizer={localizer} date={date} view={view} views={[Views.WEEK, Views.AGENDA, Views.MONTH]} min={new Date(1970, 1, 1, 8, 0)} length={7}
-        max={new Date(1970, 1, 1, 21, 0)} onNavigate={onNavigate} onView={onView} selectable />;
+    return <BigCalendar {...props} localizer={localizer} date={date} view={view} views={[Views.WEEK]} min={new Date(1970, 1, 1, 8, 0)}
+        max={new Date(1970, 1, 1, 21, 0)} onNavigate={onNavigate} onView={onView} />;
 }
