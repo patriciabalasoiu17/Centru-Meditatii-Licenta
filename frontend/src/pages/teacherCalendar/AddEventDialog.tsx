@@ -15,7 +15,7 @@ import { toast } from "sonner"
 import { TimePickerInput } from "@/components/ui/timepicker"
 import React from "react"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getGroups } from "../groups/GroupApi"
+import { getGroupsByTeacherId } from "../groups/GroupApi"
 import { Group } from "../groups/types"
 
 export function AddEventDialog({ setSelectedEvent, classEvent, open, setOpenDialog, teacherId }: { setSelectedEvent: Dispatch<SetStateAction<ClassEvent | null>>, classEvent: ClassEvent | null, open: boolean, setOpenDialog: (open: boolean) => void, teacherId?: string }) {
@@ -38,7 +38,7 @@ export function AddEventDialog({ setSelectedEvent, classEvent, open, setOpenDial
 
     const { data: teacherGroups } = useQuery({
         queryKey: ["teacherGroup", teacherId],
-        queryFn: () => teacherId ? getGroups({ teacherId }) : Promise.resolve(null),
+        queryFn: () => teacherId ? getGroupsByTeacherId({ teacherId }) : Promise.resolve(null),
         enabled: !!teacherId,
     });
 
