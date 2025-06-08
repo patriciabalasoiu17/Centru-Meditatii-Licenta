@@ -42,23 +42,23 @@ export default function StudentCatalogPage() {
         enabled: !!studentId,
     });
 
-    if (loadingAbsences || loadingGrades) return <div>Loading...</div>;
-    if (!absences || !gradedEvaluations || errorAbsences || errorGrades) return <div>Something went wrong...</div>;
+    if (loadingAbsences || loadingGrades || loadingEvaluations) return <div>Loading...</div>;
+    if (!absences || !gradedEvaluations || !evaluations || errorEvaluations || errorAbsences || errorGrades) return <div>Something went wrong...</div>;
 
 
     const gradesPerSubjectData: GradeSummary[] = Object.entries(gradedEvaluations).map(([subject, entries]) => {
-        const evaluations = entries.map(e => ({
+        const evaluations: { date: string, grade: number | string }[] = entries.map((e: { createdAt: string | number | Date; grade: number | string; }) => ({
             date: new Date(e.createdAt).toISOString().split("T")[0],
             grade: e.grade,
         }));
 
 
         const numericGrades = entries
-            .filter(e => typeof e.grade === "number")
-            .map(e => e.grade as number);
+            .filter((e: { grade: number | string; }) => typeof e.grade === "number")
+            .map((e: { grade: number; }) => e.grade as number);
 
         const average = numericGrades.length
-            ? numericGrades.reduce((a, b) => a + b, 0) / numericGrades.length
+            ? numericGrades.reduce((a: number, b: number) => a + b, 0) / numericGrades.length
             : 0;
 
         return { subject, evaluations, average };
@@ -66,7 +66,7 @@ export default function StudentCatalogPage() {
 
 
     const allGradesFlatData: FlatEvaluation[] = Object.entries(evaluations ?? {}).flatMap(([subject, entries]) =>
-        entries?.map(entry => ({
+        entries?.map((entry: { grade: any; createdAt: string | number | Date; groupName: any; behavior: any; gradeComment: any; subjects: any[]; gaps: any[]; homework: any; }) => ({
             subject,
             grade: entry.grade ?? "-",
             date: new Date(entry.createdAt).toISOString().split("T")[0],

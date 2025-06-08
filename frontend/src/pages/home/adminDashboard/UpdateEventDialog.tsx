@@ -44,14 +44,14 @@ export function UpdateEventDialog({ classEvent }: { classEvent: ClassEvent | und
     const { data: selectedGroup } = useQuery(
         {
             queryKey: ["group", classEvent?.title],
-            queryFn: () => getGroupByName({ name: classEvent?.title }),
+            queryFn: () => getGroupByName({ name: classEvent?.title as string }),
         }
     )
     useEffect(() => {
         if (selectedGroup != undefined) {
             setTeacherId((selectedGroup as Group).teacherId)
         }
-        setGroupName(classEvent?.title)
+        setGroupName(classEvent?.title as string)
         setStartDate(classEvent?.start)
         setEndDate(classEvent?.end)
         setError("")

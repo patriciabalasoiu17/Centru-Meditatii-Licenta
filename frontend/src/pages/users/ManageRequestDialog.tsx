@@ -116,11 +116,6 @@ export function ManageRequestDialog({ id }: { id: string }) {
         }
     };
 
-    const handleDelete = () => {
-
-    };
-
-
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>

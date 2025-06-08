@@ -7,6 +7,15 @@ export interface Absence {
     reason?: string;
 }
 
+export interface MaxAttendance {
+    prezente: number;
+    absente: number;
+}
+
+export interface MaxAttendanceDate extends MaxAttendance {
+    date: Date;
+}
+
 export interface Subject {
     name: string;
     understanding: string;

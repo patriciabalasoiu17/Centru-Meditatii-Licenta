@@ -8,6 +8,14 @@ export default function TeacherHeader({ teacherId }: { teacherId: string }) {
         queryFn: () => getTeacher(teacherId),
     });
 
+    if (isLoading) {
+        return <div>Loading..</div>
+    }
+
+    if (error) {
+        return <div>error : {error?.message}</div>
+    }
+
     return (
         <div>{data?.Name}</div>
     )

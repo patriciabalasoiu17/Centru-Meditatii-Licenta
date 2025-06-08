@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Absence } from "@/lib/types";
+import { Absence, MaxAttendance } from "@/lib/types";
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}/absences`;
 
@@ -23,7 +23,7 @@ export const getAbsencesForStudent = async (
 
 export const getMaxAttendance = async (
   currentDate: string
-): Promise<Absence[]> => {
+): Promise<MaxAttendance> => {
   const response = await axios.get(`${BASE_URL}/max-attendance?date=${currentDate}`);
 
   return response.data;

@@ -10,7 +10,7 @@ export const getGroups = async ({
   teacherId?: string;
   name?: string;
 }): Promise<Group[] | Group> => {
-  var url = BASE_URL;
+  let url = BASE_URL;
   if (teacherId) {
     url += `?teacherId=${teacherId}`;
   } else if (name) {
@@ -27,7 +27,7 @@ export const getGroupsByTeacherId = async ({
 }: {
   teacherId?: string;
 }): Promise<Group[]> => {
-  var url = BASE_URL;
+  let url = BASE_URL;
   if (teacherId) {
     url += `?teacherId=${teacherId}`;
   }
@@ -41,7 +41,7 @@ export const getGroupByName = async ({
 }: {
   name?: string;
 }): Promise<Group> => {
-  var url = `${BASE_URL}?name=${name}`;
+  let url = `${BASE_URL}?name=${name}`;
   const response = await axios.get(url);
   return response.data;
 };

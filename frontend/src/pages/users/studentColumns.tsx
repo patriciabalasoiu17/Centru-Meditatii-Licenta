@@ -1,8 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { UserResource } from "@clerk/types"
+import { Student } from "../student/types"
 
 
-export const studentColumns: ColumnDef<UserResource>[] = [
+export const studentColumns: ColumnDef<Student>[] = [
     {
         accessorKey: "Name",
         header: "Nume",

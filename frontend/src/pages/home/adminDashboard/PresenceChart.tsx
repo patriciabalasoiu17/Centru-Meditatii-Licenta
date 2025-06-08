@@ -27,6 +27,7 @@ import {
     SelectContent,
     SelectGroup,
 } from "@/components/ui/select";
+import { MaxAttendanceDate } from "@/lib/types";
 
 const dayNames = [
     "Duminică",
@@ -84,7 +85,7 @@ export default function AttendanceChart() {
     const { data: attendanceData } = useQuery({
         queryKey: ["attendance", viewType, selectedDate.toISOString()],
         queryFn: async () => {
-            const results = await Promise.all(
+            const results: MaxAttendanceDate[] = await Promise.all(
                 dates.map(async (date) => {
                     const iso = date.toISOString().split("T")[0];
                     const result = await getMaxAttendance(iso);

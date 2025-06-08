@@ -30,14 +30,6 @@ export const Calendar = ({
         [UI.Month]: 'space-y-4 ml-0',
         [UI.MonthCaption]: 'flex justify-center items-center h-7',
         [UI.CaptionLabel]: 'text-sm font-medium',
-        [UI.ButtonPrevious]: cn(
-          buttonVariants({ variant: 'outline' }),
-          'absolute left-1 top-0 h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100'
-        ),
-        [UI.ButtonNext]: cn(
-          buttonVariants({ variant: 'outline' }),
-          'absolute right-1 top-0 h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100'
-        ),
         [UI.MonthGrid]: 'w-full border-collapse space-y-1',
         [UI.Weekdays]: 'flex',
         [UI.Weekday]:

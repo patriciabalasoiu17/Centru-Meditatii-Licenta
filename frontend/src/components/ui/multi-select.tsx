@@ -1,4 +1,3 @@
-// src/components/multi-select.tsx
 
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -7,7 +6,6 @@ import {
   XCircle,
   ChevronDown,
   XIcon,
-  WandSparkles,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -58,7 +56,7 @@ const multiSelectVariants = cva(
  */
 interface MultiSelectProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof multiSelectVariants> {
+  VariantProps<typeof multiSelectVariants> {
   /**
    * An array of option objects to be displayed in the multi-select component.
    * Each option object has a label, value, and an optional icon.
@@ -142,7 +140,7 @@ export const MultiSelect = React.forwardRef<
     const [selectedValues, setSelectedValues] =
       React.useState<string[]>(defaultValue);
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-    const [isAnimating, setIsAnimating] = React.useState(false);
+    const [isAnimating] = React.useState(false);
 
     const handleInputKeyDown = (
       event: React.KeyboardEvent<HTMLInputElement>
@@ -364,7 +362,7 @@ export const MultiSelect = React.forwardRef<
             </CommandList>
           </Command>
         </PopoverContent>
-       
+
       </Popover>
     );
   }

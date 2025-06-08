@@ -9,6 +9,15 @@ export default function TeacherHeader({ students }: { students: string[] }) {
         queryFn: getStudents
     });
 
+
+    if (isLoading) {
+        return <div>Loading..</div>
+    }
+
+    if (error) {
+        return <div>error : {error?.message}</div>
+    }
+
     const filteredStudents = data?.filter((student) => { if (student._id != null) return students.includes(student._id) })
 
     return (
