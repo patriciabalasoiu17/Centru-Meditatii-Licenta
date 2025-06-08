@@ -15,6 +15,7 @@ import { useState } from "react"
 import { useParams } from "react-router-dom"
 import { toast } from "sonner"
 import { addAbsence, deleteAbsence, getAbsencesForStudent } from "./AbsenceApi"
+import { getClassEvent } from "@/pages/teacherCalendar/CalendarApi"
 
 export function AddAbsenceDialog({ student }: { student: Student }) {
 
@@ -23,7 +24,6 @@ export function AddAbsenceDialog({ student }: { student: Student }) {
     if (!params.name || !params.id) {
         return <div>Parametru invalid</div>;
     }
-
 
     const groupName = params.name || "";
     const classEventId = params.id || ""
@@ -67,7 +67,12 @@ export function AddAbsenceDialog({ student }: { student: Student }) {
         queryFn: () => getAbsencesForStudent(student._id as string),
         enabled: !!student._id,
     });
-    console.log("🚀 ~ AddAbsenceDialog ~ existingAbsences:", existingAbsences)
+
+    const { data: currentClassEvent } = useQuery({
+        queryKey: ["classEvent", classEventId],
+        queryFn: () => getClassEvent(classEventId),
+        enabled: !!student._id,
+    });
 
 
     const alreadyAbsent = existingAbsences?.some(
@@ -76,7 +81,7 @@ export function AddAbsenceDialog({ student }: { student: Student }) {
     );
 
     const handleSubmit = () => {
-        addMutation.mutate({ studentId: student._id || "", groupName: groupName, classEventId: classEventId, date: new Date(), reason: reason })
+        addMutation.mutate({ studentId: student._id || "", groupName: groupName, classEventId: classEventId, date: currentClassEvent?.start as Date, reason: reason })
     }
 
     const deleteAbsenceOnClick = () => {

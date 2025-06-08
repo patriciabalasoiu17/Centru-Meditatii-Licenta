@@ -14,13 +14,15 @@ export default function Group() {
         return <div>Parametru invalid</div>;
     }
 
+    const groupName = params.name
+
     const {
         data,
         isLoading,
         error,
     } = useQuery({
-        queryKey: ["group", params.name],
-        queryFn: () => getGroups({ name: params.name }),
+        queryKey: ["group", groupName],
+        queryFn: () => getGroups({ name: groupName }),
     });
 
     const studentQueries = useQueries({

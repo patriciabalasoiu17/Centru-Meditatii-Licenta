@@ -48,10 +48,6 @@ export const getGroup = async (req, res) => {
 
 export const createGroup = async (req, res) => {
   const { name, teacherId, students, subject } = req.body;
-  console.log("🚀 ~ createGroup ~ name:", name);
-  console.log("🚀 ~ createGroup ~ subject:", subject);
-  console.log("🚀 ~ createGroup ~ students:", students);
-  console.log("🚀 ~ createGroup ~ teacherId:", teacherId);
 
   try {
     const group = await Group.create({ name, teacherId, students, subject });

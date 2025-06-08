@@ -5,12 +5,12 @@ import {
   updateClassEvent,
   deleteClassEvent,
   getClassEvent,
-  getClassEvents,
+  getClassEventsForTeacher,
 } from "../controllers/ClassEventController.js";
 
 const router = Router();
 
-router.get("/", getClassEvents);
+router.get("/", getClassEventsForTeacher);
 router.get("/:id", getClassEvent);
 router.post("/", createClassEvent);
 router.delete("/:id", deleteClassEvent);

@@ -21,6 +21,15 @@ export const getAbsencesForStudent = async (
   return response.data;
 };
 
+export const getMaxAttendance = async (
+  currentDate: string
+): Promise<Absence[]> => {
+  const response = await axios.get(`${BASE_URL}/max-attendance?date=${currentDate}`);
+
+  return response.data;
+};
+
+
 export const deleteAbsence = async (studentId: string, groupId: string, classEventId: string) => {
   const response = await axios.delete(`${BASE_URL}/${studentId}/${groupId}/${classEventId}`);
   return response.data;

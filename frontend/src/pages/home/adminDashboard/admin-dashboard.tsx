@@ -1,12 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Calendar } from "@/components/ui/calendar";
-import { PresenceChart } from "./PresenceChart";
+import PresenceChart from "./PresenceChart";
 import { useState } from "react";
 import { format } from "date-fns";
 import { useQuery } from "@tanstack/react-query";
-import { getStudents } from "../student/StudentApi";
-import { getTeachers } from "../teacher/TeacherApi";
+import { getStudents } from "../../student/StudentApi";
+import { getTeachers } from "../../teacher/TeacherApi";
+import BigCalendar from "./BigCalendar";
 
 const AdminDashboard = () => {
     const [date, setDate] = useState(new Date());
@@ -19,49 +19,38 @@ const AdminDashboard = () => {
         queryKey: ["teachers"],
         queryFn: getTeachers,
     });
-    console.log("🚀 ~ AdminDashboard ~ teachers:", teachers)
 
     return (
         <div className="p-6 space-y-6">
-            {/* User info */}
             <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-                </div>
-                <div className="flex items-center gap-4">
-                    <div className="text-right">
-                        <p className="font-semibold">Jane Doe</p>
-                        <p className="text-sm text-muted-foreground">Admin</p>
-                    </div>
-                    <Avatar>
-                        <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
-                </div>
+                <h1 className="text-2xl font-bold">Admin Dashboard</h1>
             </div>
 
-            {/* Statistics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Card>
-                    <CardContent className="p-4">
-                        <p className="text-xl font-semibold">{students?.length}</p>
-                        <p className="text-muted-foreground">Elevi</p>
+            <div className="grid grid-cols-4 grid-rows-3 gap-4">
+                <Card className="col-span-1 bg-[#8884d8]">
+                    <CardContent className="flex flex-col justify-center items-center w-full h-full ">
+                        <p className="text-5xl font-semibold text-white">{students?.length}</p>
+                        <p className="text-3xl text-white">Elevi</p>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="col-span-1 bg-[#f87171]">
+                    <CardContent className="flex flex-col justify-center items-center w-full h-full">
+                        <p className="text-5xl font-semibold text-white">{teachers?.length}</p>
+                        <p className="text-3xl text-white">Profesori</p>
+                    </CardContent>
+                </Card>
+                <div className="col-span-2 row-span-3">
+                    <BigCalendar />
+                </div>
+                <Card className="col-span-2 row-span-2 ">
                     <CardContent className="p-4">
-                        <p className="text-xl font-semibold">{teachers?.length}</p>
-                        <p className="text-muted-foreground">Profesori</p>
+                        <p className="text-lg font-semibold mb-4">Prezență</p>
+                        <PresenceChart />
                     </CardContent>
                 </Card>
             </div>
 
-            {/* Presence Chart */}
-            <Card>
-                <CardContent className="p-4">
-                    <p className="text-lg font-semibold mb-4">Prezență</p>
-                    <PresenceChart />
-                </CardContent>
-            </Card>
+
 
             {/* Calendar and Agenda */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -81,7 +70,7 @@ const AdminDashboard = () => {
                 <Card>
                     <CardContent className="p-4">
                         <p className="text-lg font-semibold mb-2">Calendar</p>
-                        <Calendar mode="single" selected={date} onSelect={setDate} />
+                        {/* <Calendar mode="single" selected={date} onSelect={setDate} /> */}
                     </CardContent>
                 </Card>
             </div>

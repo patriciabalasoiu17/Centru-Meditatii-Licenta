@@ -2,11 +2,17 @@
 import mongoose from "mongoose";
 import ClassEvent from "../models/ClassEventModel.js";
 
-export const getClassEvents = async (req, res) => {
+export const getClassEventsForTeacher = async (req, res) => {
   const { teacherId } = req.query;
 
-  const teachers = await ClassEvent.find({ teacherId }).sort({ createdAt: -1 });
-  res.status(200).json(teachers);
+  if (teacherId != null) {
+    const teachers = await ClassEvent.find({ teacherId }).sort({ createdAt: -1 });
+    res.status(200).json(teachers);
+  } else {
+    const teachers = await ClassEvent.find().sort({ createdAt: -1 });
+    res.status(200).json(teachers);
+  }
+
 };
 
 export const getClassEvent = async (req, res) => {

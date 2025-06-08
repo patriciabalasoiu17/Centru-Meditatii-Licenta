@@ -18,7 +18,6 @@ export const getGroups = async ({
   }
 
   const response = await axios.get(url);
-  console.log("🚀 ~ url:", url);
   return response.data;
 };
 

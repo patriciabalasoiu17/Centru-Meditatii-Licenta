@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import AdminDashboard from "./admin-dashboard";
+import AdminDashboard from "./adminDashboard/admin-dashboard";
 import TeacherDashboard from "./teacherDashboard/TeacherDashboard";
 
 export default function Home() {
