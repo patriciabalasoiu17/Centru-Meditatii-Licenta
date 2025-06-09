@@ -44,8 +44,7 @@ export const getUsersWithoutRole = async (req, res) => {
 
 export const updateUserRole = async (req, res) => {
   const { id } = req.params;
-  const { role } = req.body; // e.g., "student" or "profesor"
-
+  const { role } = req.body;
   if (!["student", "profesor", ""].includes(role)) {
     return res.status(400).json({ error: "Invalid role specified." });
   }
@@ -85,3 +84,19 @@ export const removeUserRole = async (req, res) => {
     res.status(500).json({ error: "Nu s-a putut șterge rolul." });
   }
 };
+export async function deleteClerkUserByEmail(email) {
+  try {
+    const users = await clerkClient.users.getUserList({ emailAddress: [email] });
+
+    if (users.length === 0) {
+      throw new Error("User not found in Clerk with email: " + email);
+    }
+
+    await clerkClient.users.deleteUser(users.data[0].id);
+
+    console.log("Deleted user with email:", email);
+  } catch (error) {
+    console.error("Error deleting user by email:", error);
+    throw error;
+  }
+}

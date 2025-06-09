@@ -17,7 +17,7 @@ export default function Teacher() {
   if (error || !data) {
     return <div>Something went wrong...</div>
   }
-  return <div className="w-full">
+  return <div className="w-[85%] p-4">
     <DataTable data={data} columns={columns} />
     <Toaster />
   </div>

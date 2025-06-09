@@ -1,6 +1,7 @@
 // controllers/TeacherController.js
 import mongoose from "mongoose";
 import Teacher from "../models/TeacherModel.js";
+import { deleteClerkUserByEmail } from "./UserController.js";
 
 export const getTeachers = async (req, res) => {
   const teachers = await Teacher.find({}).sort({ createdAt: -1 });
@@ -57,20 +58,20 @@ export const createTeacher = async (req, res) => {
 
 export const deleteTeacher = async (req, res) => {
   const { id } = req.params;
+  try {
+    const teacher = await Teacher.findById(id);
+    if (!teacher) {
+      throw new Error("Teacher not found");
+    }
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Nu au fost gasite rezultate" });
+    await deleteClerkUserByEmail(teacher.Mail);
+    await Teacher.findByIdAndDelete({ _id: id });
+
+    res.status(200).json({ message: "Teacher deleted from both Clerk and DB." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const teacher = await Teacher.findOneAndDelete({ _id: id });
-
-  if (!teacher) {
-    return res.status(400).json({ error: "Nu au fost gasite rezultate" });
-  }
-
-  res.status(200).json(teacher);
 };
-
 export const updateTeacher = async (req, res) => {
   const { id } = req.params;
 

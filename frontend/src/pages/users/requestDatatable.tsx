@@ -35,6 +35,7 @@ export function RequestDataTable<TData, TValue>({
 
     return (
         <div className="space-y-4">
+            <span className="text-2xl font-bold">Cereri</span>
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
