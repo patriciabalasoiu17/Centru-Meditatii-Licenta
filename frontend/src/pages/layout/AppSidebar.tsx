@@ -10,36 +10,23 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import {
   Backpack,
-  ChevronUp,
   GraduationCap,
   Home,
   Library,
-  User2,
   Users,
 } from "lucide-react";
 
 import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignOutButton,
-  UserButton,
   useUser,
 } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
 import { getStudentByEmail } from "../student/StudentApi";
 
 export function AppSidebar() {
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { user, isLoaded } = useUser();
 
   if (!isLoaded) return <div>Loading...</div>;
 
@@ -102,6 +89,7 @@ export function AppSidebar() {
   );
 
   return (
+
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
@@ -122,53 +110,10 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  {isSignedIn ? (
-                    <>
-                      <UserButton />
-                      <div className="flex flex-col ml-2">
-                        <span className="text-black">
-                          {user.primaryEmailAddress?.emailAddress}
-                        </span>
-                        <span className="text-xs text-neutral-600">
-                          {role as string}
-                        </span>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <User2 /> Not signed in
-                    </>
-                  )}
-                  <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                <DropdownMenuItem>
-                  <span>Account</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <SignedOut>
-                    <SignInButton />
-                  </SignedOut>
-                  <SignedIn>
-                    <SignOutButton />
-                  </SignedIn>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
