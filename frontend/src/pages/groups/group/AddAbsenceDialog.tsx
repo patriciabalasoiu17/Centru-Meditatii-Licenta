@@ -100,14 +100,14 @@ export function AddAbsenceDialog({ student }: { student: Student }) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Aduagă absență</DialogTitle>
+                    <DialogTitle>Adaugă absență</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
                         <Label htmlFor="name" >
                             Nume Elev
                         </Label>
-                        <Input id="name" placeholder="Introdu numele grupei" value={student.Name} disabled />
+                        <Input id="name"  value={student.Name} disabled />
                     </div>
                 </div>
 
@@ -116,7 +116,7 @@ export function AddAbsenceDialog({ student }: { student: Student }) {
                         <Label htmlFor="name" >
                             Motivație (opțional)
                         </Label>
-                        <Input id="name" placeholder="Introdu numele grupei" onChange={(e) => setReason(e.target.value)} value={reason} />
+                        <Input id="name" onChange={(e) => setReason(e.target.value)} value={reason} />
                     </div>
                 </div>
                 <DialogFooter>

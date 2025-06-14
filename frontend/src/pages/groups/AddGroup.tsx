@@ -100,7 +100,7 @@ export function AddGroupDialog({ id }: { id?: string }) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
+                    <DialogTitle>Adaugă grupă</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">

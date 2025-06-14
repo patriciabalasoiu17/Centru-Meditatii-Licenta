@@ -62,8 +62,8 @@ export function AddTeacherDialog({ id }: { id?: string }) {
         mutationFn: updateTeacher,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["teachers"] });
-            toast.error("Ceva nu a funcționat...");
-            // toast.success("Profesor modificat cu succes.");
+            // toast.error("Ceva nu a funcționat...");
+            toast.success("Profesor modificat cu succes.");
             setOpen(false);
         },
     });
