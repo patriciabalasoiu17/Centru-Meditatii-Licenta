@@ -123,7 +123,7 @@ export default function StudentEvaluationDialog({ student }: { student: Student 
                     {existingEvaluation ? "Modifică evaluarea" : "Adaugă Evaluare"}
                 </Button>
             </DialogTrigger>
-            <DialogContent className="min-w-[1200px]">
+            <DialogContent className="max-h-[800px] overflow-y-scroll min-w-[1200px]">
                 <DialogHeader>
                     <DialogTitle className="text-2xl">Fișă Evaluare Elev</DialogTitle>
                 </DialogHeader>
